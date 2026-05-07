@@ -1,0 +1,6 @@
+{
+  "name": "SmartBus: AI Student Tracking",
+  "description": "AI-powered student tracking and bus verification system.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": []
+}

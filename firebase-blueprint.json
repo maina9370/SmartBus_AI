@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Student profile data for bus verification.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "wing": { "type": "string" },
+        "department": { "type": "string" },
+        "year": { "type": "string" },
+        "busRoute": { "type": "string" },
+        "parentEmail": { "type": "string" },
+        "parentPhone": { "type": "string" },
+        "photoUrl": { "type": "string", "description": "URL to the verified profile image for face recognition." },
+        "userId": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "suspended"] }
+      },
+      "required": ["name", "wing", "parentEmail", "parentPhone", "photoUrl"]
+    },
+    "AttendanceLog": {
+      "title": "Attendance Log",
+      "description": "Logs of when students board and exit the bus.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "busId": { "type": "string" },
+        "action": { "type": "string", "enum": ["board", "exit"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" },
+            "stopName": { "type": "string" }
+          }
+        }
+      },
+      "required": ["studentId", "busId", "action", "timestamp"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Automated notifications sent to parents.",
+      "type": "object",
+      "properties": {
+        "studentId": { "type": "string" },
+        "recipientEmail": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string", "enum": ["boarding", "exiting"] },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "sent": { "type": "boolean" }
+      },
+      "required": ["studentId", "recipientEmail", "message", "type", "timestamp"]
+    },
+    "Bus": {
+      "title": "Bus",
+      "description": "Information about the bus and current occupancy.",
+      "type": "object",
+      "properties": {
+        "busNumber": { "type": "string" },
+        "route": { "type": "string" },
+        "driverName": { "type": "string" },
+        "currentOccupancy": { "type": "number" },
+        "maxCapacity": { "type": "number" }
+      },
+      "required": ["busNumber", "route"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Collection of all registered students."
+    },
+    "/buses/{busId}": {
+      "schema": "Bus",
+      "description": "Collection of buses in the system."
+    },
+    "/attendance_logs/{logId}": {
+      "schema": "AttendanceLog",
+      "description": "Real-time logs of student activity."
+    },
+    "/notifications/{notifId}": {
+      "schema": "Notification",
+      "description": "History of notifications sent to parents."
+    }
+  }
+}
